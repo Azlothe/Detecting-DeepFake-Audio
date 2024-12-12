@@ -1,0 +1,55 @@
+Explanation of Model Parameters
+
+Each model's parameters are chosen based on their ability to address specific aspects of the problem while maintaining simplicity for an initial implementation. Here's a breakdown:
+
+---
+
+1. Support Vector Classifier (SVC)
+- Kernel: Default ('rbf') — Radial Basis Function kernel is versatile and works well for non-linear problems.
+- Random State: 42 — Ensures reproducibility.
+
+SVC is robust for high-dimensional data like audio features, making it a strong candidate for detecting subtle patterns in fake vs. real voices.
+
+---
+
+2. Naive Bayes
+- GaussianNB: Assumes Gaussian distribution of features — suitable for continuous data like normalized audio features.
+
+Naive Bayes is computationally efficient and provides a simple baseline model, useful for comparison. However, its assumption of feature independence may not fully capture complex relationships between audio features.
+
+---
+
+3. K-Nearest Neighbors (KNN)
+- n_neighbors: 5 — A commonly used value that balances overfitting (too small) and underfitting (too large).
+
+KNN is a non-parametric model that works well with well-scaled data, such as the normalized features. The choice of 5 neighbors provides a balance between stability and sensitivity.
+
+---
+
+4. Random Forest
+- n_estimators: Default — Number of trees in the forest. (The default is typically sufficient unless the dataset is very large.)
+- Random State: 42 — For reproducibility.
+
+Random Forest combines decision trees to improve generalization. It's less sensitive to noise and overfitting compared to single decision trees. It is particularly effective in capturing non-linear relationships in the features.
+
+---
+
+5. Long Short-Term Memory (LSTM)
+- Input Shape: (1, X_train.shape[1]) — Represents a single time step with multiple features.
+  - Treating each audio sample as a single time step allows the model to focus on feature correlations.
+- LSTM Units: 64 — Balances complexity and training time. Higher values could improve performance but may lead to overfitting on smaller datasets.
+- Dropout: 0.5 — Helps prevent overfitting by randomly deactivating 50% of the neurons during training.
+- Dense Layer (32 units): Adds complexity to the model to learn abstract patterns.
+- Output Layer Activation: softmax — Suitable for multi-class or binary classification (with one-hot encoded labels).
+
+LSTMs are designed for sequence data, but here, they are applied to exploit feature relationships. Dropout layers are included to prevent overfitting, especially given the relatively small dataset.
+
+---
+
+General Design Principles
+1. Baseline Comparisons: Simple models like Naive Bayes establish a baseline for evaluating the effectiveness of more sophisticated models.
+2. Regularization: Parameters like Dropout in LSTM help prevent overfitting.
+3. Scalability: Parameters are chosen to balance model complexity and training efficiency, suitable for a dataset with 11,778 samples.
+4. Reproducibility: Setting random seeds ensures consistent results across runs.
+
+These parameters are selected based on typical recommendations, knowledge of the models, and the structure of the dataset. Fine-tuning through grid search or other optimization techniques can further improve performance.
